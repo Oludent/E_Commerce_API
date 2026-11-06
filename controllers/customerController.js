@@ -47,7 +47,9 @@ const getAllCustomer = async (req, res)=>{
 const getOneCustomer = async (req, res)=>{
    try {
          const {id} = req.params;
-        const getOne = await Customer.findOne({where: {id}});
+        const getOne = await Customer.findByPk(id, {
+            attributes: ['firstName', 'lastName', 'email']
+        });
         if (!getOne){
         return res.status(404).json({
             message: `Customer not found!`
