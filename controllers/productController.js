@@ -3,13 +3,21 @@ const { Product, Category } = require('../models');
 const createProduct = async (req, res) => {
   try {
     const {categoryId} = req.params;
-    const { name, description, price, stockQuantity} = req.body;
+    const { name, description, price, stockQuantity } = req.body;
 
     const category = await Category.findByPk(categoryId);
 
     if (!category) {
       return res.status(404).json({
         message: 'Error creating product: Category not found'
+      });
+    }
+
+    const name1 = await Product.findOne({ where: { name } });
+
+    if (name1) {
+      return res.status(400).json({
+        message: 'Error creating product: Product name already exists'
       });
     }
 
@@ -27,7 +35,8 @@ const createProduct = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+       message: error.message });
   }
 };
 
@@ -36,7 +45,8 @@ const getAllProducts = async (req, res) => {
     const products = await Product.findAll({
       include: [{
         model: Category,
-        as: 'category'
+        as: 'categories',
+        attributes: ['name', 'description']
       }]
     });
 
@@ -52,11 +62,14 @@ const getAllProducts = async (req, res) => {
 
 const getOneProduct = async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id, {
-      include: [{
+    const { id } = req.params;
+    const product = await Product.findByPk(id, {
+      attributes: ['name', 'price', 'stockQuantity'],
+      include: {
         model: Category,
-        as: 'category'
-      }]
+        as: 'categories',
+        attributes: ['name', 'description']
+      }
     });
 
     if (!product) {
@@ -77,7 +90,9 @@ const getOneProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id);
+    const {id} = req.params;
+    
+    const product = await Product.findByPk(id);
 
     if (!product) {
       return res.status(404).json({
