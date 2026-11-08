@@ -10,7 +10,7 @@ module.exports = {
       },
       customerId: {
         type: Sequelize.UUID,
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

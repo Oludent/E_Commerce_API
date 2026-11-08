@@ -8,7 +8,7 @@ const createCart = async (req, res)=>{
         if (!cust) {
             return res.send("Customer added cart already")
         }
-        const newCart = await Cart.create({
+        const newCarrt = await Cart.create({
             customerId,
         })
 
@@ -24,7 +24,7 @@ const createCart = async (req, res)=>{
 }
 const getAllCart = async (req, res)=> {
     try {
-        const allCart = await Cart.findAll();
+        const allCart = await Carrt.findAll();
         res.status(200).json({
             message: `Carts found successfully and the number is: ${allCart.length}`,
             data: allCart
@@ -40,7 +40,7 @@ const getAllCart = async (req, res)=> {
 const getCart = async (req, res)=>{
     try {
         const {customerId} = req.params;
-        const cart = await Cart.findByPk(customerId, {
+        const cart = await Carrt.findByPk(customerId, {
             include: {
             model: Customer,
             as: 'customers',
@@ -67,7 +67,7 @@ const getCart = async (req, res)=>{
 const deleteCart = async (req, res)=>{
     try {
         const {customerId} = req.params;
-        const cart = await Cart.findOne({where: {customerId}})
+        const cart = await Carrt.findOne({where: {customerId}})
 
         if (!cart) {
             return res.status(404).json({
