@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Cart.belongsTo(models.Customer, {
-        foreignKey: 'customerId',
+      Cart.belongsTo(models.Customer,{
         as: 'customers',
-        onDelete: 'CASCASED',
-        onUpdate: 'CASCASED'
+        foreignKey: 'customerId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
     }
   }
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Cart',
-    tableName: "Carts",
+    tableName: 'Carts',
     timestamps: true
   });
   return Cart;

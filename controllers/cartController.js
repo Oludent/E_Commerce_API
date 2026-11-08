@@ -1,12 +1,12 @@
-const {Cart, Product, Customer} = require('../models');
+const {Cart, Customer} = require('../models');
 
 const createCart = async (req, res)=>{
     try {
         const {customerId} = req.params;
-        const cart = await Cart.findOne({where: {customerId}});
+        const customer = await Customer.findByPk(customerId);
 
-        if (cart) {
-            return res.send("Cart already exist")
+        if (!customer) {
+            return res.send("Customer added cart already")
         }
         const newCart = await Cart.create({
             customerId,
@@ -23,12 +23,27 @@ const createCart = async (req, res)=>{
     }
 }
 
+const getAllCart = async (req, res)=> {
+    try {
+        const allCart = await Cart.findAll({
+            attributes: ['id', 'customerId']
+        });
+        res.status(200).json({
+            message: `Carts found successfully and the number is: ${allCart.length}`,
+            data: allCart
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+}
 
 
 const getCart = async (req, res)=>{
     try {
-        const {customerId} = req.params;
-        const cart = await Cart.findOne({where: {customerId}});
+        const {id} = req.params;
+        const cart = await Cart.findByPk(id,{attributes: ['id', 'customerId', ]})
 
         if (!cart) {
             return res.status(404).json({
@@ -48,8 +63,8 @@ const getCart = async (req, res)=>{
 
 const deleteCart = async (req, res)=>{
     try {
-        const {customerId} = req.params;
-        const cart = await Cart.findOne({where: {customerId}})
+        const {id} = req.params;
+        const cart = await Cart.findOne({where: {id}})
 
         if (!cart) {
             return res.status(404).json({
@@ -70,7 +85,8 @@ const deleteCart = async (req, res)=>{
 
 
 module.exports = {
-    createCart, 
+    createCart,
+    getAllCart, 
     getCart,
     deleteCart
 }
