@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       });
-      
+
       Customer.hasMany(models.Order,{
         as: 'orders',
         onDelete: 'CASCADE',

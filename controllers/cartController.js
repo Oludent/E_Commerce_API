@@ -3,12 +3,12 @@ const {Cart, Customer} = require('../models');
 const createCart = async (req, res)=>{
     try {
         const {customerId} = req.params;
-        const cust = await Customer.findByPk(customerId);
+        const customer = await Customer.findByPk(customerId);
 
-        if (!cust) {
+        if (!customer) {
             return res.send("Customer added cart already")
         }
-        const newCarrt = await Cart.create({
+        const newCart = await Cart.create({
             customerId,
         })
 
@@ -22,9 +22,12 @@ const createCart = async (req, res)=>{
         })
     }
 }
+
 const getAllCart = async (req, res)=> {
     try {
-        const allCart = await Carrt.findAll();
+        const allCart = await Cart.findAll({
+            attributes: ['id', 'customerId']
+        });
         res.status(200).json({
             message: `Carts found successfully and the number is: ${allCart.length}`,
             data: allCart
@@ -39,14 +42,8 @@ const getAllCart = async (req, res)=> {
 
 const getCart = async (req, res)=>{
     try {
-        const {customerId} = req.params;
-        const cart = await Carrt.findByPk(customerId, {
-            include: {
-            model: Customer,
-            as: 'customers',
-            attributes: ['firstName', 'lastName','email' ]
-            }
-        });
+        const {id} = req.params;
+        const cart = await Cart.findByPk(id,{attributes: ['id', 'customerId', ]})
 
         if (!cart) {
             return res.status(404).json({
@@ -66,8 +63,8 @@ const getCart = async (req, res)=>{
 
 const deleteCart = async (req, res)=>{
     try {
-        const {customerId} = req.params;
-        const cart = await Carrt.findOne({where: {customerId}})
+        const {id} = req.params;
+        const cart = await Cart.findOne({where: {id}})
 
         if (!cart) {
             return res.status(404).json({
