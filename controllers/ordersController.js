@@ -1,25 +1,25 @@
 // const { Model } = require('sequelize');
-const { Orders, Customers, Products } = require('../models');
+const { Order, Customer, Product } = require('../models');
 
 const createOrder = async (req, res) => {
     try {
         const { customerId, productId, quantity } = req.body;
 
-        const customer = await Customers.findByPk(customerId);
+        const customer = await Customer.findByPk(customerId);
         if (!customer) {
             return res.status(404).json({
                 message: 'Customer not found!'
             });
         }
 
-        const product = await Products.findByPk(productId);
+        const product = await Product.findByPk(productId);
         if (!product) {
             return res.status(404).json({
                 message: 'Product not found!'
             });
         }
 
-        const newOrder = await Orders.create({
+        const newOrder = await Order.create({
             customerId,
             productId,
             quantity,
@@ -41,7 +41,7 @@ const createOrder = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const allOrders = await Orders.findAll();
+    const allOrders = await Order.findAll();
     res.status(200).json({
       message: `Orders retrieved successfully and the number is: ${allOrders.length}`,
       data: allOrders
@@ -57,7 +57,7 @@ const getAllOrders = async (req, res) => {
 const getOneOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const oneOrder = await Orders.findByPk(id, {
+    const oneOrder = await Order.findByPk(id, {
       attributes: ['productId', 'quantity', 'purchasePrice', 'status'],
       includes: {
         Model: Customers,
@@ -88,7 +88,7 @@ const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const updatedOrder = await Orders.update({ status}, { where: { id } });
+    const updatedOrder = await Order.update({ status}, { where: { id } });
 
     if (!updatedOrder) {
       return res.status(404).json({
@@ -112,7 +112,7 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedOrder = await Orders.destroy({ where: { id } });
+    const deletedOrder = await Order.destroy({ where: { id } });
 
     if (!deletedOrder) {
       return res.status(404).json({

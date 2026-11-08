@@ -31,7 +31,8 @@ const createCustomer = async (req, res)=>{
 
 const getAllCustomer = async (req, res)=>{
     try {
-        const getAll = await Customer.findAll()
+        const getAll = await Customer.findAll({
+            attributes: ['firstName', 'lastName', 'email']});
         res.status(200).json({
             message: `Customers found successfully and the number is: ${getAll.length}!`,
             data: getAll

@@ -8,14 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      CustomerId: {
+      customerId: {
         type: Sequelize.UUID,
         allowNull: false,
-        unique: true,
-        references: {
-          model: 'Customer',
-          key: 'id',
-        }
       },
       createdAt: {
         allowNull: false,

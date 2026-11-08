@@ -5,8 +5,10 @@ const PORT = process.env.PORT || 2345
 const sequelize = require('./database/database');
 
 const customerRouter = require('./routers/customerRouter')
-const productRouter = require("./routers/productRouter")
-const categoryRouter = require("./routers/categoryRouter")
+const productRouter = require('./routers/productRouter')
+const categoryRouter = require('./routers/categoryRouter')
+const orderRouter = require('./routers/ordersRouter')
+const cartRouter = require('./routers/cartRouter')
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use(customerRouter);
 app.use(productRouter);
 app.use(categoryRouter);
+app.use(orderRouter);
+app.use(cartRouter);
 
 
 const dbConnection = async ()=>{

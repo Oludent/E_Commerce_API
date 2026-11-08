@@ -11,6 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Customer.hasMany(models.Order,{
+        as: 'orders',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
+      Customer.hasOne(models.Cart,{
+        as: 'cart',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      })
     }
   }
   Customer.init({

@@ -1,5 +1,4 @@
-const { request } = require('express')
-const {Customer, Product, Cart, CartItem} = require('../models')
+const {Customer, Product, Cart, OrderItem} = require('../models')
 
 const addProductToCart = async (req, res) => {
     try {
@@ -26,7 +25,7 @@ const addProductToCart = async (req, res) => {
         }
 
         // 4. Check whether the product already exists in the cart
-        const cartProduct = await CartItem.findOne({
+        const cartProduct = await OrderItem.findOne({
             where: {
                 CartId: cart.id,
                 productId
@@ -44,7 +43,7 @@ const addProductToCart = async (req, res) => {
             });
         }
 
-        const newCartItem = await CartItem.create({
+        const newCartItem = await OrderItem.create({
             CartId: cart.id,
             productId,
             quantity
@@ -63,7 +62,7 @@ const addProductToCart = async (req, res) => {
 };
 
 
-const getCartItems = async (req, res) => {
+const getOrderItems = async (req, res) => {
     try {
         const { customerId } = req.params;
 
@@ -77,7 +76,7 @@ const getCartItems = async (req, res) => {
             });
         }
 
-        const cartItems = await CartItem.findAll({
+        const cartItems = await OrderItem.findAll({
             where: { CartId: cart.id },
             include: [Product]
         });
@@ -95,7 +94,7 @@ const getCartItems = async (req, res) => {
 };
 
 
-const updateCartItem = async (req, res) => {
+const updateOrderItem = async (req, res) => {
     try {
         const { customerId, productId } = req.params;
         const { quantity } = req.body;
@@ -116,7 +115,7 @@ const updateCartItem = async (req, res) => {
             });
         }
 
-        const cartProduct = await CartItem.findOne({
+        const cartProduct = await OrderItem.findOne({
             where: {
                 CartId: cart.id,
                 productId
@@ -159,7 +158,7 @@ const removeProductFromCart = async (req, res) => {
             });
         }
 
-        const cartProduct = await CartItem.findOne({
+        const cartProduct = await OrderItem.findOne({
             where: {
                 CartId: cart.id,
                 productId
@@ -188,8 +187,8 @@ const removeProductFromCart = async (req, res) => {
 
 module.exports = {
     addProductToCart,
-    getCartItems,
-    updateCartItem,
+    getOrderItems,
+    updateOrderItem,
     removeProductFromCart
 };
 

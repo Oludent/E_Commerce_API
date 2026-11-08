@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Cart.belongsTo(models.Customer, {
         foreignKey: 'customerId',
-        as: 'customer',
+        as: 'customers',
         onDelete: 'CASCASED',
         onUpdate: 'CASCASED'
       })
@@ -23,16 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     id: {
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID
-      },
-      CustomerId: {
         type: DataTypes.UUID,
-        allowNull: false,
-        unique: true,
-        references: {
-          model: 'Customer',
-          key: 'id',
-        }
+        defaultValue: DataTypes.UUIDV4
+      },
+      customerId: {
+        type: DataTypes.UUID,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

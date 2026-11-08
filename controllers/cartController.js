@@ -3,7 +3,6 @@ const {Cart, Product, Customer} = require('../models');
 const createCart = async (req, res)=>{
     try {
         const {customerId} = req.params;
-        
         const cart = await Cart.findOne({where: {customerId}});
 
         if (cart) {
@@ -14,7 +13,8 @@ const createCart = async (req, res)=>{
         })
 
         res.status(200).json({
-            message: "Cart created successfully", newCart
+            message: "Cart created successfully", 
+            data: newCart
         })
     } catch (error) {
         res.status(500).json({
@@ -23,6 +23,28 @@ const createCart = async (req, res)=>{
     }
 }
 
+
+
+const getCart = async (req, res)=>{
+    try {
+        const {customerId} = req.params;
+        const cart = await Cart.findOne({where: {customerId}});
+
+        if (!cart) {
+            return res.status(404).json({
+                message: "Cart not found"
+            })
+        }
+        res.status(200).json({
+            message: "Cart found", 
+            data: cart
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+}
 
 const deleteCart = async (req, res)=>{
     try {
@@ -46,29 +68,9 @@ const deleteCart = async (req, res)=>{
     }
 }
 
-const getCart = async (req, res)=>{
-    try {
-        const {customerId} = req.params;
-        const cart = await Cart.findOne({where: {customerId}});
-
-        if (!cart) {
-            return res.status(404).json({
-                message: "Cart not found"
-            })
-        }
-        res.status(200).json({
-            message: "Cart found", cart
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: error.message
-        })
-    }
-}
-
 
 module.exports = {
     createCart, 
-    deleteCart, 
-    getCart
+    getCart,
+    deleteCart
 }

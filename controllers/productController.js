@@ -2,19 +2,14 @@ const { Product, Category } = require('../models');
 
 const createProduct = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      price,
-      quantity,
-      categoryId
-    } = req.body;
+    const {categoryId} = req.params;
+    const { name, description, price, stockQuantity} = req.body;
 
     const category = await Category.findByPk(categoryId);
 
     if (!category) {
       return res.status(404).json({
-        message: 'Category not found'
+        message: 'Error creating product: Category not found'
       });
     }
 
@@ -22,7 +17,7 @@ const createProduct = async (req, res) => {
       name,
       description,
       price,
-      quantity,
+      stockQuantity,
       categoryId
     });
 

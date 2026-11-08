@@ -1,6 +1,7 @@
 const express = require('express');
 
 const {createCustomer, getAllCustomer, getOneCustomer, updateCustomer, deleteCustomer}= require('../controllers/customerController')
+
 const {createCustomerValidation} = require('../middleware/customerValidation')
 
 const router = express.Router();

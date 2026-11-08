@@ -11,17 +11,63 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Product.belongsTo(models.Category, {
+        foreignKey: 'categoryId',
+        as: 'categories',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
+
+      Product.belongsToMany(models.Order, {
+        through: 'OrderItem',
+        foreignKey: 'orderId',
+        as: 'orders',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      });
     }
   }
   Product.init({
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    price: DataTypes.DECIMAL,
-    quantity: DataTypes.INTEGER,
-    categoryId: DataTypes.UUID
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      price: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      stockQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      categoryId: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE
+      }
   }, {
     sequelize,
     modelName: 'Product',
+    tableName: 'Products',
+    timestamps: true
   });
   return Product;
 };

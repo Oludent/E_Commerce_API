@@ -6,37 +6,25 @@ module.exports = {
           id: {
             allowNull: false,
             primaryKey: true,
-            type: DataTypes.UUID,
+            type: Sequelize.UUID,
         },
         customerId: {
           type: Sequelize.UUID,
-          allowNull: false,
-          references: {
-            model: 'Customers',  // References the Customers table and its primary key
-            key: 'id'
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          allowNull: false
         },
         status: {
-            type: DataTypes.ENUM(
+            type: Sequelize.ENUM(
                 'Pending',
                 'Processing',
                 'Shipped',
                 'Delivered',
                 'Cancelled'
-            ),
+              ),
             defaultValue: 'Pending'
         },
       productId: {
         type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'Products', // Links directly to your Products table
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
       },
       quantity: {
         type: Sequelize.INTEGER,
