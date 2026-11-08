@@ -9,6 +9,7 @@ const productRouter = require('./routers/productRouter')
 const categoryRouter = require('./routers/categoryRouter')
 const orderRouter = require('./routers/ordersRouter')
 const cartRouter = require('./routers/cartRouter')
+const cartItemRouter = require('./routers/cartItemRouter')
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(productRouter);
 app.use(categoryRouter);
 app.use(orderRouter);
 app.use(cartRouter);
+app.use(cartItemRouter);
 
 
 const dbConnection = async ()=>{
