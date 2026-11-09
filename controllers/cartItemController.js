@@ -22,9 +22,9 @@ const addToCart = async (req, res) => {
     }
 
     const cartItem = await CartItem.create({
+      quantity,
       cartId,
-      productId,
-      quantity
+      productId
     });
 
     res.status(201).json({
@@ -40,7 +40,7 @@ const addToCart = async (req, res) => {
 
 const getALLCartItem = async (req, res) => {
   try {
-    const cartII = await CartItem.findAll({
+    const cartII = await CartItem.findAll({attributes: ['quantity'],
       include: [{
         model: Product,
         as: 'products',

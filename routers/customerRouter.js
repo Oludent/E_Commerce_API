@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {createCustomer, getAllCustomer, getOneCustomer, updateCustomer, deleteCustomer}= require('../controllers/customerController')
+const {createCustomer, getAllCustomer, getOneCustomer, updateCustomer, deleteCustomer, addToCart, removeFromCart}= require('../controllers/customerController')
 
 const {createCustomerValidation} = require('../middleware/customerValidation')
 
@@ -10,7 +10,9 @@ router.post('/createcustomer', createCustomerValidation, createCustomer);
 router.get('/allcustomers', getAllCustomer);
 router.get('/getonecustomer/:id', getOneCustomer);
 router.patch('/updatecustomer/:id', updateCustomer);
-router.delete('/deletecustomer/:id', deleteCustomer)
+router.delete('/deletecustomer/:id', deleteCustomer);
+router.post('/addtocart/:id', addToCart);
+router.delete('/deletecart/:customerId', removeFromCart)
 
 
 module.exports = router
