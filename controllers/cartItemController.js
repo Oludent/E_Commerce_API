@@ -28,7 +28,7 @@ const addToCart = async (req, res) => {
     });
 
     res.status(201).json({
-      message: 'Product created successfully',
+      message: 'CartItem created successfully',
       data: cartItem
     });
 
@@ -40,7 +40,7 @@ const addToCart = async (req, res) => {
 
 const getALLCartItem = async (req, res) => {
   try {
-    const products = await CartItem.findAll({
+    const cartII = await CartItem.findAll({
       include: [{
         model: Product,
         as: 'products',
@@ -49,8 +49,8 @@ const getALLCartItem = async (req, res) => {
     });
 
     res.status(200).json({
-      message: 'Products retrieved successfully',
-      data: products
+      message: 'CartItems retrieved successfully',
+      data: cartII
     });
 
   } catch (error) {

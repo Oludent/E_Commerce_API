@@ -122,7 +122,7 @@ const deleteProduct = async (req, res) => {
       });
     }
 
-    await Product.destroy();
+    await Product.destroy({where: {id: req.params.id}});
 
     res.status(200).json({
       message: 'Product deleted successfully'
