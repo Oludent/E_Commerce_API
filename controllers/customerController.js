@@ -1,4 +1,4 @@
-const {Customer} = require('../models');
+const {Customer, Product, Cart, CartItem} = require('../models');
 
 const createCustomer = async (req, res)=>{
     try {
@@ -119,20 +119,68 @@ const deleteCustomer = async (req, res)=>{
     }
 }
 
+const addToCart = async (req, res) => {
+    try {
 
+        const {id, productId} = req.params;
+        const {firstName, lastName, name, description } = req.body
+        const user = await Customer.findByPk(id)
 
+        if (!user){
+            return res.status(404).json({
+                message: `Customer does not exist`
+            })
+        }
+        const addtocart = await Cart.create({
+            customerId: id,
+            firstName,
+            lastName,
+            name,
+            description,
+            productId
+        })
+        res.status(200).json({
+            message: `Added to cart successfully`,
+            data: addtocart
+        })
+        
+    } catch (error) {
+          res.status(500).json({
+            message: error.message
+        })   
+    }
 
+}
 
+const removeFromCart = async (req, res) =>{
+    try {
+        const {customerId}= req.params
+        const user = await Customer.findOne({where: {customerId}})
 
+        if (!user){
+            return res.status(404).json({
+                message: `Customer didnt place order`
+            })
+        }
 
+        const removeCart = await Cart.destroy({where: {customerId}})
+        res.status(200).json({
+            message: `Cart deleted successfully`,
+            data: removeCart
+        })
+    } catch (error) {
+         res.status(500).json({
+            message: error.message
+        })   
+    }
+}
 
-
-
-
-module.exports ={
+module.exports = {
     createCustomer,
     getAllCustomer,
     getOneCustomer,
     updateCustomer,
-    deleteCustomer
+    deleteCustomer,
+    addToCart,
+    removeFromCart
 }
